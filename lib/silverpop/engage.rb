@@ -271,6 +271,10 @@ module Silverpop
                         list_id, old_email, new_email, extra_columns, created_from) )
     end
 
+    def select_recipient_data(list_id, email, return_contact_lists=false)
+      response_xml = query( xml_select_recipient_data(list_id, email, return_contact_lists) )
+    end
+
     def remove_recipient(list_id, email)
       response_xml = query( xml_remove_recipient(list_id, email) )
     end
@@ -565,6 +569,17 @@ module Silverpop
           '<VALUE>%s</VALUE>'+
         '</COLUMN>'
       ) % [name, value]
+    end
+
+    def xml_select_recipient_data(list_id, email, return_contact_lists)
+      ( '<Envelope><Body>'+
+          '<SelectRecipientData>'+
+            '<LIST_ID>%s</LIST_ID>'+
+            '<EMAIL>%s</EMAIL>'+
+            '<RETURN_CONTACT_LISTS>%s</RETURN_CONTACT_LISTS>'+
+          '</SelectRecipientData>'+
+        '</Body></Envelope>'
+      ) % [list_id, email, return_contact_lists.to_s]
     end
 
     def xml_remove_recipient(list_id, email)
