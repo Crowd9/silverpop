@@ -246,7 +246,7 @@ module Silverpop
     ###
     #   RECIPIENT MANAGEMENT
     ###
-    def add_recipient(list_id, email, extra_columns=[], created_from=1)
+    def add_recipient(list_id, email, extra_columns=[], created_from=1, contact_list_id=nil)
       # CREATED_FROM
       # Value indicating the way in which you are adding the selected recipient
       # to the system. Values include:
@@ -255,10 +255,10 @@ module Silverpop
       # * 2 – Opted in
       # * 3 – Created from tracking list
       response_xml =  query(xml_add_recipient(
-                        list_id, email, extra_columns, created_from) )
+                        list_id, email, extra_columns, created_from, contact_list_id) )
     end
 
-    def update_recipient(list_id, old_email, new_email=nil, extra_columns=[], created_from=1)
+    def update_recipient(list_id, old_email, new_email=nil, extra_columns=[], created_from=1, contact_list_id=nil)
       # CREATED_FROM
       # Value indicating the way in which you are adding the selected recipient
       # to the system. Values include:
@@ -268,7 +268,7 @@ module Silverpop
       # * 3 – Created from tracking list
       new_email = old_email if new_email.nil?
       response_xml =  query(xml_update_recipient(
-                        list_id, old_email, new_email, extra_columns, created_from) )
+                        list_id, old_email, new_email, extra_columns, created_from, contact_list_id) )
     end
 
     def remove_recipient(list_id, email)
@@ -511,7 +511,7 @@ module Silverpop
             column[:include] ]
     end
 
-    def xml_add_recipient(list_id, email, extra_columns, created_from)
+    def xml_add_recipient(list_id, email, extra_columns, created_from, contact_list_id)
       xml = ( '<Envelope><Body>'+
                 '<AddRecipient>'+
                   '<LIST_ID>%s</LIST_ID>'+
@@ -532,10 +532,14 @@ module Silverpop
         end
       end
 
+      if contact_list_id
+        (doc/:AddRecipient).append xml_add_recipient_contact_list(contact_list_id)
+      end
+
       doc.to_s
     end
 
-    def xml_update_recipient(list_id, old_email, new_email, extra_columns, created_from)
+    def xml_update_recipient(list_id, old_email, new_email, extra_columns, created_from, contact_list_id)
       xml = ( '<Envelope><Body>'+
                 '<UpdateRecipient>'+
                   '<LIST_ID>%s</LIST_ID>'+
@@ -556,6 +560,10 @@ module Silverpop
         end
       end
 
+      if contact_list_id
+        (doc/:UpdateRecipient).append xml_add_recipient_contact_list(contact_list_id)
+      end
+
       doc.to_s
     end
 
@@ -565,6 +573,13 @@ module Silverpop
           '<VALUE>%s</VALUE>'+
         '</COLUMN>'
       ) % [name, value]
+    end
+
+    def xml_add_recipient_contact_list(contact_list_id)
+      ( '<CONTACT_LISTS>'+
+        '<CONTACT_LIST_ID>%s</CONTACT_LIST_ID>'+
+        '</CONTACT_LISTS>'
+      ) % [contact_list_id]
     end
 
     def xml_remove_recipient(list_id, email)
