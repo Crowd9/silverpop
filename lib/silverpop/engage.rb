@@ -543,7 +543,7 @@ module Silverpop
       doc.to_s
     end
 
-    def xml_update_recipient(list_id, old_email, new_email, extra_columns, created_from, contact_list_id)
+    def xml_update_recipient(list_id, old_email, new_email, extra_columns, created_from)
       xml = ( '<Envelope><Body>'+
                 '<UpdateRecipient>'+
                   '<LIST_ID>%s</LIST_ID>'+
@@ -562,10 +562,6 @@ module Silverpop
         extra_columns.each do |c|
           (doc/:UpdateRecipient).append xml_add_recipient_column(c[:name], c[:value])
         end
-      end
-
-      if contact_list_id
-        (doc/:UpdateRecipient).append xml_add_recipient_contact_list(contact_list_id)
       end
 
       doc.to_s
