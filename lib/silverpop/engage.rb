@@ -258,7 +258,7 @@ module Silverpop
                         list_id, email, extra_columns, created_from, contact_list_id) )
     end
 
-    def update_recipient(list_id, old_email, new_email=nil, extra_columns=[], created_from=1, contact_list_id=nil)
+    def update_recipient(list_id, old_email, new_email=nil, extra_columns=[], created_from=1)
       # CREATED_FROM
       # Value indicating the way in which you are adding the selected recipient
       # to the system. Values include:
@@ -268,7 +268,7 @@ module Silverpop
       # * 3 – Created from tracking list
       new_email = old_email if new_email.nil?
       response_xml =  query(xml_update_recipient(
-                        list_id, old_email, new_email, extra_columns, created_from, contact_list_id) )
+                        list_id, old_email, new_email, extra_columns, created_from) )
     end
 
     def remove_recipient(list_id, email)
