@@ -525,9 +525,15 @@ module Silverpop
                     '<NAME>EMAIL</NAME>'+
                     '<VALUE>%s</VALUE>'+
                   '</COLUMN>'+
+                  '<SYNC_FIELDS>'+
+                    '<SYNC_FIELD>'+
+                      '<NAME>EMAIL</NAME>'+
+                      '<VALUE>%s</VALUE>'+
+                    '</SYNC_FIELD>'+
+                  '</SYNC_FIELDS>' +
                 '</AddRecipient>'+
               '</Body></Envelope>'
-      ) % [list_id, created_from, email]
+      ) % [list_id, created_from, email, email]
 
       doc = Hpricot::XML(xml)
       if extra_columns.size > 0
@@ -588,9 +594,13 @@ module Silverpop
             '<LIST_ID>%s</LIST_ID>'+
             '<EMAIL>%s</EMAIL>'+
             '<RETURN_CONTACT_LISTS>%s</RETURN_CONTACT_LISTS>'+
+            '<COLUMN>'+
+              '<NAME>EMAIL</NAME>'+
+              '<VALUE>%s</VALUE>'+
+            '</COLUMN>'+
           '</SelectRecipientData>'+
         '</Body></Envelope>'
-      ) % [list_id, email, return_contact_lists.to_s]
+      ) % [list_id, email, return_contact_lists.to_s, email]
     end
 
     def xml_remove_recipient(list_id, email)
@@ -598,9 +608,13 @@ module Silverpop
           '<RemoveRecipient>'+
             '<LIST_ID>%s</LIST_ID>'+
             '<EMAIL>%s</EMAIL>'+
+            '<COLUMN>'+
+              '<NAME>EMAIL</NAME>'+
+              '<VALUE>%s</VALUE>'+
+            '</COLUMN>'+
           '</RemoveRecipient>'+
         '</Body></Envelope>'
-      ) % [list_id, email]
+      ) % [list_id, email, email]
     end
 
     def xml_double_opt_in_recipient(list_id, email, extra_columns)
