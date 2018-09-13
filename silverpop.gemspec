@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.description = "Silverpop allows for seamless integration from Ruby with the Engage and Transact API."
   s.authors  = ["George Truong, Bill Abney, Mario Zaizar, Sergey Gopkalo"]
 
-  s.has_rdoc = false
   s.rdoc_options = ["--main", "README.md"]
   s.extra_rdoc_files = ["README.md"]
 
