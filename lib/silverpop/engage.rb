@@ -377,9 +377,9 @@ module Silverpop
     def xml_export_list_meta_data(id)
       ( '<Envelope><Body>'+
           '<GetListMetaData>'+
-          '<LIST_ID>%d</LIST_ID>'+
+            '<LIST_ID>%d</LIST_ID>'+
           '</GetListMetaData>'+
-          '</Body></Envelope>'
+        '</Body></Envelope>'
       ) % id
     end
 
