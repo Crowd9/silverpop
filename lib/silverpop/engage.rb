@@ -96,6 +96,10 @@ module Silverpop
       response_xml = query( xml_export_list(id, fields) )
     end
 
+    def get_list_meta_data(id)
+      response_xml = query( xml_export_list_meta_data(id) )
+    end
+
     def calculate_query(query_id, email = nil)
       response_xml = query( xml_calculate_query(query_id, email) )
     end
@@ -367,6 +371,15 @@ module Silverpop
             '</EXPORT_COLUMNS>'+
           '</ExportList>'+
         '</Body></Envelope>'
+      ) % id
+    end
+
+    def xml_export_list_meta_data(id)
+      ( '<Envelope><Body>'+
+          '<GetListMetaData>'+
+          '<LIST_ID>%d</LIST_ID>'+
+          '</GetListMetaData>'+
+          '</Body></Envelope>'
       ) % id
     end
 
